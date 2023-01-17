@@ -1,0 +1,77 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const prisma_1 = __importDefault(require("../../prisma"));
+const insemination_models_1 = require("./insemination.models");
+const router = express_1.default.Router();
+router.post("", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const insemination = req.body;
+    const inseminationFromDb = yield prisma_1.default.insemination.create({
+        data: {
+            cow: {
+                connect: {
+                    earingNumber: insemination.cowEaringNumber
+                }
+            },
+            semen: {
+                connect: {
+                    number: insemination.semenNumber
+                }
+            },
+        },
+        include: {
+            cow: true,
+            semen: true
+        }
+    });
+    res.json(new insemination_models_1.InseminationResponse(inseminationFromDb));
+}));
+router.get("/list", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const inseminationList = yield prisma_1.default.insemination.findMany({
+        include: {
+            cow: true,
+            semen: true
+        }
+    });
+    inseminationList.map(insemination => {
+        return new insemination_models_1.InseminationResponse(insemination);
+    });
+    res.json(inseminationList);
+}));
+router.get("/listAllData", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const inseminationList = yield prisma_1.default.insemination.findMany({
+        include: {
+            cow: {
+                include: {
+                    owner: {
+                        include: {
+                            adress: true
+                        }
+                    }
+                }
+            },
+            semen: {
+                include: {
+                    bull: true
+                }
+            }
+        }
+    });
+    inseminationList.map(insemination => {
+        return new insemination_models_1.InseminationResponseWithALlData(insemination);
+    });
+    res.json(inseminationList);
+}));
+exports.default = router;

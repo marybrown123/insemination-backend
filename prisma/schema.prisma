@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+    id Int @id @default(autoincrement())
+    name String
+    secondName String @map("second_name")
+    adress Adress @relation(fields: [adressId], references: [id])
+    adressId Int @map("adress_id") @unique
+    cows Cow[]
+
+    @@map("client")
+}
+
+model Adress {
+    id Int @id @default(autoincrement())
+    city String
+    street String
+    streetNumber String @map("street_number")
+    postCode String @map("post_code")
+    clients Client?
+
+    @@map("adress")
+}
+
+model Cow {
+    earingNumber String @id @map("earing_number")
+    owner Client @relation(fields: [ownerId], references: [id])
+    ownerId Int @map("owner_id")
+    inseminations Insemination[]
+
+    @@map("cow")
+}
+
+model Bull {
+    id Int @id @default(autoincrement())
+    name String
+    breedName String @map("breed_name")
+    semens Semen[]
+
+    @@map("bull")
+}
+
+model Semen {
+    number String @id
+    bull Bull @relation(fields: [bullId], references: [id])
+    bullId Int @map("bull_id")
+    inseminations Insemination[]
+
+    @@map("semen")
+}
+
+model Insemination {
+    id Int @id @default(autoincrement())
+    cow Cow @relation(fields: [cowEaringNumber], references: [earingNumber])
+    cowEaringNumber String @map("cow_earing_number")
+    semen Semen @relation(fields: [semenNumber], references: [number])
+    semenNumber String @map("semen_number")
+
+    @@map("insemination")
+}
