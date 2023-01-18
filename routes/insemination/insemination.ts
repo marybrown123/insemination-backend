@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from "express";
+import { isMemberName } from "typescript";
 import prisma from "../../prisma";
 import { InseminationDto, InseminationResponse, InseminationResponseWithALlData } from "./insemination.models";
 
@@ -62,6 +63,20 @@ router.get("/listAllData", async (req: Request, res: Response) => {
         return new InseminationResponseWithALlData(insemination);
     })
     res.json(inseminationList);
+})
+
+router.delete("/delete", async (req: Request, res: Response) => {
+    try{
+        const inseminationId: number = req.body.inseminationId;
+        await prisma.insemination.delete({
+            where: {
+                id: inseminationId
+            }
+        })
+        res.json("Insemination deleted")
+    } catch(error){
+        res.json("Insemination does not exist")
+    }
 })
 
 export default router;

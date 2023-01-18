@@ -43,4 +43,19 @@ router.get("/list", async (req: Request, res: Response) => {
     res.json(clientsToBeReturned);
 })
 
+router.delete("/delete", async (req: Request, res: Response) => {
+    try{
+        const clientId: number = req.body.clientId;
+        await prisma.client.delete({
+            where: {
+                id: clientId
+            }
+        })
+        res.json("Client deleted")
+    } catch(error){
+        res.json("Client does not exist")
+    }
+
+})
+
 export default router;

@@ -26,4 +26,19 @@ router.post("", async (req: Request, res: Response) => {
     res.json(new CowResponseWithOwner(cowFromDB));
 })
 
+router.delete("/delete", async (req: Request, res: Response) => {
+    try{
+        const cowEaringNumber: string = req.body.cowId;
+        await prisma.cow.delete({
+            where: {
+                earingNumber: cowEaringNumber
+            }
+        })
+        res.json("Cow deleted")
+    } catch(error){
+        res.json("Cow does not exist")
+    }
+
+})
+
 export default router;

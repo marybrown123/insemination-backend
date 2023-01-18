@@ -15,4 +15,21 @@ router.post("", async (req: Request, res: Response) => {
     res.json(new BullResponse(bullFromDb));
 })
 
+router.delete("/delete", async (req: Request, res: Response) => {
+    try{
+        const bullId: number = req.body.bullId;
+        await prisma.bull.delete({
+        where:{
+            id: bullId
+        }
+        
+    })
+    res.json("Bull deleted");
+    } catch(error){
+        res.json("Bull does not exist");
+    }
+    
+    
+})
+
 export default router;

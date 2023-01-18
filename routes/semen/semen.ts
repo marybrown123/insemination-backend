@@ -23,4 +23,19 @@ router.post("", async (req: Request, res: Response) => {
     res.json(new SemenResponseWithBull(semenFromDb));
 })
 
+router.delete("/delete", async (req: Request, res: Response) => {
+    try{
+        const semenNumber: string = req.body.semenNumber;
+        await prisma.semen.delete({
+            where: {
+                number: semenNumber
+            }
+        })
+        res.json("Semen deleted")
+    } catch(error){
+        res.json("Semen does not exist")
+    }
+
+})
+
 export default router;

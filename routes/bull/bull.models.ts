@@ -1,4 +1,5 @@
-import { Bull } from "@prisma/client";
+import { Bull, Semen } from "@prisma/client";
+import { SemenResponse } from "../semen/semen.models";
 
 export interface BullDto {
     name: string,

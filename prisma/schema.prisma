@@ -34,7 +34,7 @@ model Adress {
 
 model Cow {
     earingNumber String @id @map("earing_number")
-    owner Client @relation(fields: [ownerId], references: [id])
+    owner Client @relation(fields: [ownerId], references: [id], onDelete: Cascade)
     ownerId Int @map("owner_id")
     inseminations Insemination[]
 
@@ -52,7 +52,7 @@ model Bull {
 
 model Semen {
     number String @id
-    bull Bull @relation(fields: [bullId], references: [id])
+    bull Bull @relation(fields: [bullId], references: [id], onDelete: Cascade)
     bullId Int @map("bull_id")
     inseminations Insemination[]
 
@@ -61,9 +61,9 @@ model Semen {
 
 model Insemination {
     id Int @id @default(autoincrement())
-    cow Cow @relation(fields: [cowEaringNumber], references: [earingNumber])
+    cow Cow @relation(fields: [cowEaringNumber], references: [earingNumber], onDelete: Cascade)
     cowEaringNumber String @map("cow_earing_number")
-    semen Semen @relation(fields: [semenNumber], references: [number])
+    semen Semen @relation(fields: [semenNumber], references: [number], onDelete: Cascade)
     semenNumber String @map("semen_number")
 
     @@map("insemination")
