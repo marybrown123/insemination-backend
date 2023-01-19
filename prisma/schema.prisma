@@ -17,6 +17,8 @@ model Client {
     adress Adress @relation(fields: [adressId], references: [id])
     adressId Int @map("adress_id") @unique
     cows Cow[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("client")
 }
@@ -28,6 +30,8 @@ model Adress {
     streetNumber String @map("street_number")
     postCode String @map("post_code")
     clients Client?
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("adress")
 }
@@ -37,6 +41,8 @@ model Cow {
     owner Client @relation(fields: [ownerId], references: [id])
     ownerId Int @map("owner_id")
     inseminations Insemination[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("cow")
 }
@@ -46,6 +52,8 @@ model Bull {
     name String
     breedName String @map("breed_name")
     semens Semen[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("bull")
 }
@@ -55,6 +63,8 @@ model Semen {
     bull Bull @relation(fields: [bullId], references: [id])
     bullId Int @map("bull_id")
     inseminations Insemination[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("semen")
 }
@@ -65,6 +75,9 @@ model Insemination {
     cowEaringNumber String @map("cow_earing_number")
     semen Semen @relation(fields: [semenNumber], references: [number])
     semenNumber String @map("semen_number")
+    date DateTime @map("date")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("insemination")
 }
