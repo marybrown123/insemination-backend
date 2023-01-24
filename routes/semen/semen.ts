@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { idText } from "typescript";
 import prisma from "../../prisma";
 import { SemenDto, SemenResponseWithBull } from "./semen.models";
 
@@ -7,7 +8,15 @@ const router = express.Router();
 router.post("", async (req: Request, res: Response) => {
     const semen: SemenDto = req.body;
     const bullId: number = req.body.bullId;
-    const semenFromDb = await prisma.semen.create({
+    const semenFromDb = await prisma.semen.findFirst({
+        where: {
+            number: semen.number
+        }
+    })
+    if(semenFromDb){
+        return res.status(400).send("Semen already exists")
+    }
+    await prisma.semen.create({
         data: {
             number: semen.number,
             bull: {
@@ -20,22 +29,25 @@ router.post("", async (req: Request, res: Response) => {
             bull: true
         }
     })
-    res.json(new SemenResponseWithBull(semenFromDb));
+    res.send("Semen created succesfully");
 })
 
-router.delete("/delete", async (req: Request, res: Response) => {
-    try{
-        const semenNumber: string = req.body.semenNumber;
-        await prisma.semen.delete({
-            where: {
-                number: semenNumber
-            }
-        })
-        res.json("Semen deleted")
-    } catch(error){
-        res.json("Semen does not exist")
+router.delete("/delete/:number", async (req: Request, res: Response) => {
+    const semenNumber: number = Number(req.params.id);
+    const semenFromDb = await prisma.client.findFirst({
+        where: {
+            id: semenNumber
+        }
+    })
+    if(!semenFromDb){
+        return res.status(404).send("Semen does not exist");
     }
-
+    await prisma.client.delete({
+        where: {
+            id: semenNumber
+        }
+    })
+    res.send("Semen deleted");
 })
 
 export default router;

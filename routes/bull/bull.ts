@@ -6,29 +6,41 @@ const router = express.Router();
 
 router.post("", async (req: Request, res: Response) => {
     const bull: BullDto = req.body;
-    const bullFromDb = await prisma.bull.create({
+    const bullFromDb = await prisma.bull.findFirst({
+        where: {
+            name: bull.name
+        }
+    })
+    if(bullFromDb){
+        return res.status(400).send("Bull already exists");
+    } 
+    await prisma.bull.create({
         data: {
             name: bull.name,
             breedName: bull.breedName
         }
     })
-    res.json(new BullResponse(bullFromDb));
+    res.status(200).send("Bull succesfully created");
+    
+
 })
 
-router.delete("/delete", async (req: Request, res: Response) => {
-    try{
-        const bullId: number = req.body.bullId;
-        await prisma.bull.delete({
-        where:{
+router.delete("/delete/:id", async (req: Request, res: Response) => {
+    const bullId: number = Number(req.params.id);
+    const bullFromDb = await prisma.bull.findFirst({
+        where: {
             id: bullId
         }
-        
     })
-    res.json("Bull deleted");
-    } catch(error){
-        res.json("Bull does not exist");
-    }
-    
+    if(!bullFromDb){
+        return res.status(404).send("Bull does not exist");
+    } 
+    await prisma.bull.delete({
+        where: {
+            id: bullId
+        }
+    })
+    res.status(200).send("Bull succesfully deleted");
     
 })
 
