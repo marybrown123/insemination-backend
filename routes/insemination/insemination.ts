@@ -1,6 +1,7 @@
 import express, { Request, Response, Router } from "express";
+import { isMemberName } from "typescript";
 import prisma from "../../prisma";
-import { InseminationDto, InseminationResponse, InseminationResponseWithALlData } from "./insemination.models";
+import { InseminationDto, InseminationResponse } from "./insemination.models";
 
 const router = express.Router();
 
@@ -18,10 +19,22 @@ router.post("", async (req: Request, res: Response) => {
                     number: insemination.semenNumber
                 }
             },
+            date: insemination.date
         },
         include: {
-            cow: true,
-            semen: true
+            cow: {
+                include: {
+                    owner: {
+                        include: {
+                            adress: true
+                        }
+                    }}
+            },
+            semen: {
+                include: {
+                    bull: true
+                }
+            }
         }
     })
     res.json(new InseminationResponse(inseminationFromDb));
@@ -46,9 +59,27 @@ router.get("/list", async (req: Request, res: Response) => {
         }
     })
     inseminationList.map(insemination => {
-        return new InseminationResponseWithALlData(insemination);
+        return new InseminationResponse(insemination);
     })
     res.json(inseminationList);
+})
+
+router.delete("/delete/:id", async (req: Request, res: Response) => {
+    const inseminationId: number = Number(req.params.id);
+    const inseminationFromDb = await prisma.client.findFirst({
+        where: {
+            id: inseminationId
+        }
+    })
+    if(!inseminationFromDb){
+        return res.status(404).send("Insemination does not exist");
+    }
+    await prisma.client.delete({
+        where: {
+            id: inseminationId
+        }
+    })
+    res.send("insemination deleted");
 })
 
 export default router;
