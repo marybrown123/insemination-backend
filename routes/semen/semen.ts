@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { idText } from "typescript";
 import prisma from "../../prisma";
-import { SemenDto, SemenResponseWithBull } from "./semen.models";
+import { SemenDto, SemenResponse, SemenResponseWithBull } from "./semen.models";
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post("", async (req: Request, res: Response) => {
     if(semenFromDb){
         return res.status(400).send("Semen already exists")
     }
-    await prisma.semen.create({
+    const newSemen = await prisma.semen.create({
         data: {
             number: semen.number,
             bull: {
@@ -29,7 +29,7 @@ router.post("", async (req: Request, res: Response) => {
             bull: true
         }
     })
-    res.send("Semen created succesfully");
+    res.json(new SemenResponse(newSemen));
 })
 
 router.delete("/delete/:number", async (req: Request, res: Response) => {

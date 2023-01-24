@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import prisma from "../../prisma";
-import { CowDto, CowResponseWithOwner, } from "./cow.models";
+import { CowDto, CowResponse, CowResponseWithOwner, } from "./cow.models";
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.post("", async (req: Request, res: Response) => {
     if(cowFromDb){
         return res.status(400).send("Cow already exists")
     }
-    await prisma.cow.create({
+    const newCow = await prisma.cow.create({
         data: {
             earingNumber: cow.earingNumber,
             owner: {
@@ -31,7 +31,7 @@ router.post("", async (req: Request, res: Response) => {
             }
         }
 }})
-    res.send("Cow succesfully created");
+    res.json(new CowResponse(newCow));
 })
 
 router.delete("/delete/:earingNumber", async (req: Request, res: Response) => {

@@ -14,13 +14,13 @@ router.post("", async (req: Request, res: Response) => {
     if(bullFromDb){
         return res.status(400).send("Bull already exists");
     } 
-    await prisma.bull.create({
+    const newBull = await prisma.bull.create({
         data: {
             name: bull.name,
             breedName: bull.breedName
         }
     })
-    res.status(200).send("Bull succesfully created");
+    res.json(new BullResponse(newBull));
     
 
 })
