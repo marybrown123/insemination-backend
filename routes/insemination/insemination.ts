@@ -31,19 +31,6 @@ router.post("", async (req: Request, res: Response) => {
 router.get("/list", async (req: Request, res: Response) => {
     const inseminationList = await prisma.insemination.findMany({
         include: {
-            cow: true,
-            semen: true
-        }
-    })
-    inseminationList.map(insemination => {
-        return new InseminationResponse(insemination);
-    })
-    res.json(inseminationList);
-})
-
-router.get("/listAllData", async (req: Request, res: Response) => {
-    const inseminationList = await prisma.insemination.findMany({
-        include: {
             cow: {
                 include: {
                     owner: {

@@ -4,7 +4,8 @@ import { SemenResponse, SemenResponseWithBull } from "../semen/semen.models";
 
 export interface InseminationDto {
     cowEaringNumber: string,
-    semenNumber: string
+    semenNumber: string,
+    date: Date
 }
 
 export class InseminationResponse {
@@ -23,4 +24,5 @@ export class InseminationResponseWithALlData {
     }
     cow: CowResponseWithOwner;
     semen: SemenResponseWithBull;
+
 }
