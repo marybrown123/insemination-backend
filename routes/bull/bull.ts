@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import prisma from "../../prisma";
-import { BullDto, BullResponse } from "./bull.models";
+import { BullDto, BullResponse, BullResponseWithSemens } from "./bull.models";
 
 const router = express.Router();
 
@@ -23,6 +23,18 @@ router.post("", async (req: Request, res: Response) => {
     res.json(new BullResponse(newBull));
     
 
+})
+
+router.get("/listWithSemens", async (req: Request, res: Response) => {
+    const bullList = await prisma.bull.findMany({
+        include: {
+            semens: true
+        }
+    })
+    const bullsToBeReturned = bullList.map(bull => {
+        return new BullResponseWithSemens(bull)
+    })
+    res.json(bullsToBeReturned);
 })
 
 router.delete("/delete/:id", async (req: Request, res: Response) => {

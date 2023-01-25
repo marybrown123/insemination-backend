@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import prisma from "../../prisma";
-import { ClientDto, ClientResponseWithAdress } from "./client.models";
+import { ClientDto, ClientResponseWithAdress, ClientResponseWithCows } from "./client.models";
 
 const router = express.Router();
 
@@ -39,6 +39,18 @@ router.get("/list", async (req: Request, res: Response) => {
     });
     const clientsToBeReturned = clientList.map(client => {
         return new ClientResponseWithAdress(client)
+    })
+    res.json(clientsToBeReturned);
+})
+
+router.get("/listWithCows", async (req: Request, res: Response) => {
+    const clientList = await prisma.client.findMany({
+        include: {
+            cows: true
+        }
+    })
+    const clientsToBeReturned = clientList.map(client => {
+        return new ClientResponseWithCows(client);
     })
     res.json(clientsToBeReturned);
 })
