@@ -25,7 +25,7 @@ router.post("", async (req: Request, res: Response) => {
 
 })
 
-router.get("/listWithSemens", async (req: Request, res: Response) => {
+router.get("/list", async (req: Request, res: Response) => {
     const bullList = await prisma.bull.findMany({
         include: {
             semens: true

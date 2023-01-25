@@ -14,11 +14,12 @@ export interface AdressDto {
     postCode: string
 }
 
-export class ClientResponseWithCows {
-    constructor(client: Client & {cows?: Cow[]}){
+export class ClientResponse {
+    constructor(client: Client & {cows?: Cow[]} & {adress: Adress}){
         this.id = client.id;
         this.name = client.name;
         this.secondName = client.secondName;
+        this.adress = new AdressResponse(client.adress); 
         this.cows = client.cows ? client.cows.map(cow => {
             return new CowResponse(cow);
         }) : []
@@ -27,18 +28,6 @@ export class ClientResponseWithCows {
     name: string;
     secondName: string;
     cows: CowResponse[];
-}
-
-export class ClientResponseWithAdress {
-    constructor(client: Client & {adress: Adress}){
-        this.id = client.id;
-        this.name = client.name;
-        this.secondName = client.secondName;
-        this.adress = new AdressResponse(client.adress); 
-    }
-    id: number;
-    name: string;
-    secondName: string;
     adress: AdressResponse;
 }
 
