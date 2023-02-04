@@ -1,5 +1,5 @@
 import { Adress, Client, Cow } from "@prisma/client";
-import { ClientResponseWithAdress } from "../client/client.models";
+import { ClientResponse } from "../client/client.models";
 
 export interface CowDto {
     earingNumber: string,
@@ -9,10 +9,10 @@ export interface CowDto {
 export class CowResponseWithOwner{
     constructor(cow: Cow & {owner: Client & {adress: Adress}}){
         this.earingNumber = cow.earingNumber;
-        this.owner = new ClientResponseWithAdress(cow.owner);
+        this.owner = new ClientResponse(cow.owner);
     }
     earingNumber: string;
-    owner: ClientResponseWithAdress;
+    owner: ClientResponse;
 }
 
 export class CowResponse{

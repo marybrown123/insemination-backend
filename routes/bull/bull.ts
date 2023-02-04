@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
 import prisma from "../../prisma";
 import { BullDto, BullResponse, BullResponseWithSemens } from "./bull.models";
+import { makeValidateBody } from 'express-class-validator'
 
 const router = express.Router();
 
-router.post("", async (req: Request, res: Response) => {
+router.post("", makeValidateBody(BullDto), async (req: Request, res: Response) => {
     const bull: BullDto = req.body;
     const bullFromDb = await prisma.bull.findFirst({
         where: {
