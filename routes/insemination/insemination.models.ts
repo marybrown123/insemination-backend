@@ -1,11 +1,15 @@
 import { Adress, Bull, Client, Cow, Insemination, Semen } from "@prisma/client";
 import { CowResponse, CowResponseWithOwner } from "../cow/cow.models";
 import { SemenResponse, SemenResponseWithBull } from "../semen/semen.models";
+import { IsString, IsDate } from 'class-validator'
 
-export interface InseminationDto {
-    cowEaringNumber: string,
-    semenNumber: string,
-    date: Date
+export class InseminationDto {
+    @IsString()
+    cowEaringNumber!: string;
+    @IsString()
+    semenNumber!: string;
+    @IsDate()
+    date!: Date;
 }
 
 export class InseminationResponse {

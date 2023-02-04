@@ -2,10 +2,11 @@ import express, { Request, Response, Router } from "express";
 import { isMemberName } from "typescript";
 import prisma from "../../prisma";
 import { InseminationDto, InseminationResponse } from "./insemination.models";
+import { makeValidateBody } from 'express-class-validator'
 
 const router = express.Router();
 
-router.post("", async (req: Request, res: Response) => {
+router.post("", makeValidateBody(InseminationDto), async (req: Request, res: Response) => {
     const insemination: InseminationDto = req.body;
     const inseminationFromDb = await prisma.insemination.create({
         data: {
