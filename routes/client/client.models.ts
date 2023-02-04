@@ -1,12 +1,13 @@
 import { Client, Adress, Cow } from "@prisma/client";
 import { CowResponse } from "../cow/cow.models";
-import { IsString } from 'class-validator'
+import { IsString, ValidateNested } from 'class-validator'
 
 export class ClientDto {
     @IsString()
     name!: string;
     @IsString()
     secondName!: string;
+    @ValidateNested()
     adress!: AdressDto;
 }
 
