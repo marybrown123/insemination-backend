@@ -1,17 +1,24 @@
 import { Client, Adress, Cow } from "@prisma/client";
 import { CowResponse } from "../cow/cow.models";
+import { IsString } from 'class-validator'
 
-export interface ClientDto {
-    name: string,
-    secondName: string,
-    adress: AdressDto
+export class ClientDto {
+    @IsString()
+    name!: string;
+    @IsString()
+    secondName!: string;
+    adress!: AdressDto;
 }
 
-export interface AdressDto {
-    city: string,
-    street: string
-    streetNumber: string
-    postCode: string
+export class AdressDto {
+    @IsString()
+    city!: string;
+    @IsString()
+    street!: string;
+    @IsString()
+    streetNumber!: string;
+    @IsString()
+    postCode!: string;
 }
 
 export class ClientResponse {

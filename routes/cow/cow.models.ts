@@ -1,9 +1,13 @@
 import { Adress, Client, Cow } from "@prisma/client";
 import { ClientResponse } from "../client/client.models";
+import { IsString, MaxLength} from 'class-validator'
 
-export interface CowDto {
-    earingNumber: string,
-    ownerId: number
+export class CowDto {
+    @IsString()
+    @MaxLength(14)
+    earingNumber!: string;
+    @IsString()
+    ownerId!: number
 }
 
 export class CowResponseWithOwner{

@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
 import prisma from "../../prisma";
-import { CowDto, CowResponse, CowResponseWithOwner, } from "./cow.models";
+import { CowDto, CowResponse } from "./cow.models";
+import { makeValidateBody } from 'express-class-validator'
 
 const router = express.Router();
 
-router.post("", async (req: Request, res: Response) => {
+router.post("", makeValidateBody(CowDto), async (req: Request, res: Response) => {
     const cow: CowDto = req.body;
     const ownerId: number = req.body.ownerId;
     const cowFromDb = await prisma.cow.findFirst({

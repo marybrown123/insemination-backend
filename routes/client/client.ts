@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
 import prisma from "../../prisma";
 import { ClientDto, ClientResponse } from "./client.models";
+import { makeValidateBody } from 'express-class-validator'
 
 const router = express.Router();
 
-router.post("", async (req: Request, res: Response) => {
+router.post("", makeValidateBody(ClientDto), async (req: Request, res: Response) => {
     const client: ClientDto = req.body;
     const adressFromDB = await prisma.adress.create({
         data: {
