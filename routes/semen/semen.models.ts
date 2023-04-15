@@ -1,9 +1,12 @@
 import { Bull, Semen } from "@prisma/client";
 import { BullResponse } from "../bull/bull.models";
+import { IsString } from 'class-validator'
 
-export interface SemenDto {
-    number: string,
-    bullId: string
+export class SemenDto {
+    @IsString()
+    number!: string;
+    @IsString()
+    bullId!: string;
 }
 
 export class SemenResponseWithBull {

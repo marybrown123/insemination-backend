@@ -20,12 +20,14 @@ export class BullResponse {
 
 export class BullResponseWithSemens {
     constructor(bull: Bull & {semens?: Semen[]}){
+        this.id = bull.id,
         this.name = bull.name;
         this.breedName = bull.breedName;
         this.semens = bull.semens ? bull.semens.map(semen => {
             return new SemenResponse(semen);
         }) : []
     }
+    id: number;
     name: string;
     breedName: string;
     semens: SemenResponse[]

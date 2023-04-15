@@ -2,10 +2,11 @@ import express, { Request, Response } from "express";
 import { idText } from "typescript";
 import prisma from "../../prisma";
 import { SemenDto, SemenResponse, SemenResponseWithBull } from "./semen.models";
+import { makeValidateBody } from "express-class-validator";
 
 const router = express.Router();
 
-router.post("", async (req: Request, res: Response) => {
+router.post("", makeValidateBody(SemenDto), async (req: Request, res: Response) => {
     const semen: SemenDto = req.body;
     const bullId: number = req.body.bullId;
     const semenFromDb = await prisma.semen.findFirst({
