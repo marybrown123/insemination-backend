@@ -1,16 +1,6 @@
 import { Adress, Bull, Client, Cow, Insemination, Semen } from "@prisma/client";
-import { CowResponse, CowResponseWithOwner } from "../cow/cow.models";
-import { SemenResponse, SemenResponseWithBull } from "../semen/semen.models";
-import { IsString, IsDate } from 'class-validator'
-
-export class InseminationDto {
-    @IsString()
-    cowEaringNumber!: string;
-    @IsString()
-    semenNumber!: string;
-    @IsDate()
-    date!: Date;
-}
+import { CowResponseWithOwner } from "./cow.response";
+import { SemenResponseWithBull } from "./semen.response";
 
 export class InseminationResponse {
     constructor (insemination: Insemination & {cow: Cow & {owner: Client & {adress: Adress}}} & {semen: Semen & {bull: Bull}}) {

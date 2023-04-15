@@ -1,9 +1,9 @@
-import express, { Request, Response } from "express";
-import routerClient from "./routes/client/client"
-import routerCow from "./routes/cow/cow"
-import routerBull from "./routes/bull/bull"
-import routerSemen from "./routes/semen/semen"
-import routerInsemination from "./routes/insemination/insemination"
+import express from "express";
+import routerClient from "./controllers/client.controller"
+import routerCow from "./controllers/cow.controller"
+import routerBull from "./controllers/bull.controller"
+import routerSemen from "./controllers/semen.controller"
+import routerInsemination from "./controllers/insemination.controller"
 
 const app = express();
 app.use(express.json());
