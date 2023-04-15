@@ -1,13 +1,17 @@
 import { Adress, Client, Cow } from "@prisma/client";
 import { ClientResponse } from "../client/client.models";
-import { IsString, MaxLength, MinLength } from 'class-validator'
+import { IsString, MaxLength, MinLength, IsNumber } from 'class-validator/decorator/decorators'
 
 export class CowDto {
     @IsString()
-    @MaxLength(14)
-    @MinLength(14)
+    @MaxLength(14, {
+        message: 'Numer kolczyka krowy musi mieć dokładnie 14 znaków!'
+    })
+    @MinLength(14, {
+        message: 'Numer kolczyka krowy musi mieć dokładnie 14 znaków!'
+    })
     earingNumber!: string;
-    @IsString()
+    @IsNumber()
     ownerId!: number
 }
 
