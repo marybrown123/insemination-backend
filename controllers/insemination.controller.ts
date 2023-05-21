@@ -7,7 +7,7 @@ const router = express.Router();
 
 const inseminationService = new InseminationService();
 
-router.post("/", makeValidateBody(CreateInseminationDto), async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
     const insemination: CreateInseminationDto = req.body;
     const inseminationResponse = await inseminationService.create(insemination);
     res.json(inseminationResponse);
