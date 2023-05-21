@@ -7,7 +7,7 @@ const router = express.Router();
 
 const semenService = new SemenService();
 
-router.post("", makeValidateBody(CreateSemenDto), async (req: Request, res: Response) => {
+router.post("/", makeValidateBody(CreateSemenDto), async (req: Request, res: Response) => {
     const semen: CreateSemenDto = req.body;
     const semenFromDb = await semenService.getByNumber(semen.number);
     if(semenFromDb){

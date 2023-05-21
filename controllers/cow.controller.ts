@@ -7,7 +7,7 @@ const router = express.Router();
 
 const cowService = new CowService();
 
-router.post("", makeValidateBody(CreateCowDto), async (req: Request, res: Response) => {
+router.post("/", makeValidateBody(CreateCowDto), async (req: Request, res: Response) => {
     const cow: CreateCowDto = req.body;
     const cowFromDb = await cowService.getByEaringNumber(cow.earingNumber);
     if(cowFromDb){

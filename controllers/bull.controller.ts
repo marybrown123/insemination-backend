@@ -7,7 +7,7 @@ const router = express.Router();
 
 const bullService = new BullService();
 
-router.post("", makeValidateBody(CreateBullDto), async (req: Request, res: Response) => {
+router.post("/", makeValidateBody(CreateBullDto), async (req: Request, res: Response) => {
     const bull: CreateBullDto = req.body;
     const bullFromDb = await bullService.getByName(bull.name);
 

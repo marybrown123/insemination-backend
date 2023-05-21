@@ -7,7 +7,7 @@ const router = express.Router();
 
 const clientService = new ClientService();
 
-router.post("", makeValidateBody(CreateClientDto), async (req: Request, res: Response) => {
+router.post("/", makeValidateBody(CreateClientDto), async (req: Request, res: Response) => {
     const client: CreateClientDto = req.body;
     const clientResponse = await clientService.create(client);
     res.json(clientResponse);
