@@ -7,16 +7,17 @@ const router = express.Router();
 
 const bullService = new BullService();
 
-router.post("/", makeValidateBody(CreateBullDto), async (req: Request, res: Response) => {
-    const bull: CreateBullDto = req.body;
-    const bullFromDb = await bullService.getByName(bull.name);
+router.post("/", async (req: Request, res: Response) => {
+    // const bull: CreateBullDto = req.body;
+    // const bullFromDb = await bullService.getByName(bull.name);
 
-    if(bullFromDb){
-        return res.status(400).send("Bull already exists");
-    } 
+    // if(bullFromDb){
+    //     return res.status(400).send("Bull already exists");
+    // } 
 
-    const newBullResponse = await bullService.create(bull);
-    res.json(newBullResponse);
+    // const newBullResponse = await bullService.create(bull);
+    // res.json(newBullResponse);
+    console.log(req.body);
 })
 
 router.get("/list", async (req: Request, res: Response) => {
