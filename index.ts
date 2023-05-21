@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import express from "express";
 import routerClient from "./controllers/client.controller"
 import routerCow from "./controllers/cow.controller"
