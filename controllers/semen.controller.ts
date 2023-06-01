@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { makeValidateBody } from "express-class-validator";
 import { SemenService } from "../services/semen.service";
 import { CreateSemenDto } from "../DTOs/create-semen.dto";
+import { UpdateSemenDto } from "../DTOs/update-semen-dto";
 
 const router = express.Router();
 
@@ -25,6 +26,17 @@ router.delete("/delete/:number", async (req: Request, res: Response) => {
     }
     await semenService.delete(semenNumber);
     res.send("Semen deleted");
+})
+
+router.patch("/patch/:number", async (req: Request, res: Response) => {
+    const semenNumber = req.params.number;
+    const newSemen: UpdateSemenDto = req.body;
+    const semenToBeUpdated = await semenService.getByNumber(semenNumber);
+    if(!semenToBeUpdated) {
+        return res.status(404).send("Semen does not exist");
+    }
+    const updatedSemen = await semenService.update(semenNumber, newSemen);
+    res.json(updatedSemen);
 })
 
 export default router;

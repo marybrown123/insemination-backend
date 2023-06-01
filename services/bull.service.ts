@@ -1,4 +1,5 @@
 import { CreateBullDto } from "../DTOs/create-bull.dto";
+import { UpdateBullDto } from "../DTOs/update-bull.dto";
 import prisma from "../prisma";
 import { BullResponse, BullResponseWithSemens } from "../responses/bull.response";
 
@@ -46,5 +47,19 @@ export class BullService {
                 id
             }
         }))
+    }
+
+    public async update(bullId: number, newBull: UpdateBullDto) {
+        const updatedBull = await prisma.bull.update({
+            where: {
+                id: bullId,
+            },
+            data: {
+                name: newBull.name,
+                breedName: newBull.breedName,
+            }
+        })
+
+        return new BullResponse(updatedBull);
     }
 }

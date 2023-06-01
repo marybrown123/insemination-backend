@@ -1,4 +1,5 @@
 import { CreateSemenDto } from "../DTOs/create-semen.dto";
+import { UpdateSemenDto } from "../DTOs/update-semen-dto";
 import prisma from "../prisma";
 import { SemenResponse } from "../responses/semen.response";
 
@@ -34,5 +35,21 @@ export class SemenService {
                 number
             }
         }))
+    }
+
+    public async update(semenNumber: string, newSemen: UpdateSemenDto) {
+        const updatedSemen = await prisma.semen.update({
+            where: {
+                number: semenNumber,
+            },
+            data: {
+                number: newSemen.number,
+            },
+            include: {
+                bull: true,
+            },
+        })
+
+        return new SemenResponse(updatedSemen);
     }
 }

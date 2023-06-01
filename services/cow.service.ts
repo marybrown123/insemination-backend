@@ -1,4 +1,5 @@
 import { CreateCowDto } from "../DTOs/create-cow.dto";
+import { UpdateCowDto } from "../DTOs/update-cow.dto";
 import prisma from "../prisma";
 import { CowResponse } from "../responses/cow.response";
 
@@ -37,5 +38,18 @@ export class CowService {
                 earingNumber
             }
         }))
+    }
+
+    public async update(earingNumber: string, newCow: UpdateCowDto) {
+        const updatedCow = await prisma.cow.update({
+            where: {
+                earingNumber,
+            },
+            data: {
+                earingNumber: newCow.earingNumber,
+            }
+        })
+
+        return new CowResponse(updatedCow);
     }
 }
