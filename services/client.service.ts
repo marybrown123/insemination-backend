@@ -2,6 +2,7 @@ import { CreateClientDto } from "../DTOs/create-client.dto";
 import { AdressService } from "./adress.service";
 import prisma from "../prisma";
 import { ClientResponse } from "../responses/client.response";
+import { UpdateClientDto } from "../DTOs/update-client.dto";
 
 const adressService = new AdressService();
 
@@ -51,5 +52,25 @@ export class ClientService {
                 id
             }
         }))
+    }
+
+    public async update(adressId:number, clientId: number, newClient: UpdateClientDto) {
+        if(newClient.adress){
+            await adressService.update(adressId, newClient.adress)
+        }
+        const updatedClient = await prisma.client.update({
+            where: {
+                id: clientId,
+            },
+            data: {
+                name: newClient.name,
+                secondName: newClient.secondName, 
+            },
+            include: {
+                adress: true,
+            }
+        })
+
+        return new ClientResponse(updatedClient);
     }
 }

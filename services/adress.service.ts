@@ -1,5 +1,7 @@
 import { CreateAdressDto } from "../DTOs/create-adress.dto";
+import { UpdateAdressDto } from "../DTOs/update-adress.dto";
 import prisma from "../prisma";
+import { AdressResponse } from "../responses/adress.response";
 
 export class AdressService {
     public async create(adress: CreateAdressDto) {
@@ -11,5 +13,21 @@ export class AdressService {
                 postCode: adress.postCode
             }
         })
+    }
+
+    public async update(adressId: number, newAdress: UpdateAdressDto) {
+        const updatedAdress = await prisma.adress.update({
+            where: {
+                id: adressId,
+            },
+            data: {
+                city: newAdress.city,
+                street: newAdress.street,
+                streetNumber: newAdress.streetNumber,
+                postCode: newAdress.postCode,
+            }
+        })
+
+        return new AdressResponse(updatedAdress);
     }
 }
