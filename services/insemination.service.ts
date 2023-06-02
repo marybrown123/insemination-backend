@@ -61,7 +61,7 @@ export class InseminationService {
     }
 
     public async getById(id: number) {
-        return await prisma.client.findFirst({
+        return await prisma.insemination.findFirst({
             where: {
                 id
             }
