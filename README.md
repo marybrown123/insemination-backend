@@ -1,4 +1,4 @@
-# Gifts exchange generator
+# Insemination backend
 
 ## Table of contents
 * [General info](#general-info)
